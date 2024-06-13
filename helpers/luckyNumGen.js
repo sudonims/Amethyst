@@ -1,18 +1,27 @@
 /**
  *
- * @param {bday and uid} reqBody
+ * @param {username and uid} reqBody
  * @returns 6 digit lucky num
  */
 
 module.exports = (reqBody) => {
-  var { bday, uid } = reqBody;
+  var { username, password } = reqBody;
 
-  var lucky = parseInt(
-    `${uid[11 - parseInt(bday[0])]}${uid[11 - parseInt(bday[3])]}`
-  );
+  var num = 0,
+    num1 = 1;
 
-  lucky *= uid.charCodeAt(11 - parseInt(bday[5])) * 98765;
-  lucky %= parseInt(uid.slice(0, 6));
+  for (let i in username) {
+    num += i.charCodeAt(0);
+  }
+
+  for (let i in password) {
+    num1 *= i.charCodeAt(0);
+  }
+
+  var lucky = parseInt(`${num1 / num}`);
+
+  lucky *= 98765;
+  lucky %= parseInt(num1);
 
   return lucky;
 };

@@ -1,41 +1,49 @@
-const express = require('express');
-const cron = require('node-cron');
-const morgan = require('morgan');
-var cors = require('cors');
-const client = require('./helpers/postgres');
+const express = require("express");
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+var cors = require("cors");
+
+require("dotenv").config();
+
+const corsOptions = {
+  origin: true,
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+
 const app = express();
-client
-  .connect()
-  .then(() => {
-    console.log('Postgres Connected');
-  })
-  .catch((err) => {
-    console.log(err);
-  });
 
-const index = require('./routes/index.route');
-const secured = require('./routes/secured.route');
+const index = require("./routes/index.route");
+const secured = require("./routes/secured.route");
+const { connect } = require("./helpers/mongo");
+const NodeRSA = require("node-rsa");
+const { rsaDecrypt } = require("./helpers/rsaDecrypt");
 
-const verifyJWT = require('./helpers/jwtSign').verify;
+const verifyJWT = require("./helpers/jwtSign").verify;
 
-
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
-app.use(morgan('dev'));
+app.use(morgan("dev"));
+app.use(cookieParser());
 
+connect();
 
-app.use('/', index);
-app.use('/secured', verifyJWT, secured);
+app.use("/", index);
+app.use("/secured", verifyJWT, secured);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 
 app.listen(port, (err) => {
   if (!err) {
-    console.log(`Listening on port ${port}`);
+    console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
   }
 });
+
+// const key = new NodeRSA(process.env.RSA_PUBLIC, "openssh-public");
+
+// console.log(key.encrypt('{"a": ""}', "base64"));
