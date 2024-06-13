@@ -1,0 +1,28 @@
+{
+  "name": "amethyst",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongodb": "^6.7.0",
+    "morgan": "^1.10.0",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^8.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "node-cron": "^3.0.3",
+    "node-rsa": "^1.1.1",
+    "path": "^0.12.7"
+  }
+}
